@@ -1,0 +1,21 @@
+{
+  "name": "@rzning/cryptozombies",
+  "version": "0.0.1",
+  "description": "Learnning Solidity with CryptoZombies",
+  "main": "index.js",
+  "repository": "https://github.com/rzning/cryptozombies.git",
+  "author": "Zhenning Ruan <rzning@outlook.com>",
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "cryptozombies",
+    "blockchain",
+    "solidity",
+    "truffle",
+    "web3"
+  ],
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "prettier-plugin-solidity": "^1.0.0-beta.10"
+  }
+}

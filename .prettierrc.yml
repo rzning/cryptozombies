@@ -1,0 +1,22 @@
+arrowParens: "always" # 在单独的箭头函数参数两边添加括号 "always" | "avoid"
+bracketSpacing: true # 对象的内容与花括号之间是否打印空格
+endOfLine: "lf" # 行结束符 "lf" | "crlf" | "cr" | "auto"
+printWidth: 80 # 每行宽度
+proseWrap: "preserve" # 是否根据 "printWidth" 强制换行 "preserve" | "always" | "never"
+quoteProps: "consistent" # 对象属性是否添加引号 "as-needed" | "consistent" | "preserve"
+semi: false # 在语句末尾打印分号
+singleQuote: true # 使用单引号而不是双引号
+tabWidth: 2 # 缩进空格数
+trailingComma: "none" # 对象或数组等多行时是否打印尾随逗号 "es5" | "none" | "all"
+useTabs: false # 使用制表符而不是空格进行缩进
+overrides:
+  - files:
+      - "*.yml"
+      - "*.yaml"
+    options:
+      singleQuote: false
+  - files: "*.sol"
+    options:
+      singleQuote: false
+      printWidth: 120
+      tabWidth: 4
