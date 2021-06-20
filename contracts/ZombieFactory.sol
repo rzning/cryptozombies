@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.5;
 
 /**
  * @title 僵尸工厂
@@ -46,22 +46,46 @@ contract ZombieFactory {
     /// @dev 定义一个僵尸结构体数组，用于存放僵尸部队
     Zombie[] public zombies;
 
+    // 2.2 映射 ( Mapping ) 和地址 ( Address )
+    /// @notice 以太坊区块链使用地址指向于特定的用户或智能合约。
+    // 映射表示存储和查找数据所用的键值对。
+
+    // 通过给数据库中的僵尸指定“主人”，来支持“多玩家”模式。
+    // 为存储僵尸的所有权，定义两个映射：
+    /// @dev 记录僵尸拥有者的地址
+    mapping(uint256 => address) public zombieToOwner;
+    /// @dev 记录指定地址所拥有的僵尸数量
+    mapping(address => uint256) ownerZombieCount;
+
     // 1.7 定义函数
     /// @notice 习惯上函数内部变量使用下划线 _ 开头，以区别全局变量。
     // 1.9 私有/公共函数
     /// @notice Solidity 定义的函数默认为 public 公共的。
     // 将内部函数定义为 private 私有的是一个好的编程习惯。
 
+    // 2.9 更多关于函数的可见性： internal 和 external
+    /// @dev 将 _createZombie 方法改为 internal 的，以供子合约调用。
+
     /**
      * @dev 创建僵尸
      */
-    function _createZombie(string memory _name, uint256 _dna) private {
+    function _createZombie(string memory _name, uint256 _dna) internal {
         // 1.8 使用结构体和数组
         /// @dev 创建一个 Zombie 僵尸实例，并加入 zombies 数组中
         zombies.push(Zombie(_name, _dna));
 
         /// @dev 取新增僵尸在数组中的索引作为 ID 标识。
         uint256 id = zombies.length - 1;
+
+        // 2.3 Solidity 全局变量 msg.sender
+        /// @notice Solidity 中的全局变量可以被所有函数调用。
+        // 其中 msg.sender 表示当前调用者的 address 。
+        // 合约函数的执行始终需要从外部调用者发起，所以 msg.sender 总是存在的。
+
+        /// @dev 记录僵尸拥有者
+        zombieToOwner[id] = msg.sender;
+        /// @dev 拥有者的僵尸数量加 1
+        ownerZombieCount[msg.sender]++;
 
         /// @dev 触发新增僵尸事件
         emit NewZombie(id, _name, _dna);
@@ -89,6 +113,14 @@ contract ZombieFactory {
      * @dev 传入名字创建随机僵尸
      */
     function createRandomZombie(string memory _name) public {
+        // 2.4 Require
+        /// @notice Solidity 不支持原生字符串比较，只能通过比较两个字符串的 keccak256 哈希值来进行判断：
+        // require(keccak256(_name) == keccak256("Vitalik"));
+        /// @notice mapping 中值为 uint 类型时，未找到对应条目将返回 0 值。
+
+        /// @dev 限制每个用户只能自主创建一个僵尸
+        require(ownerZombieCount[msg.sender] == 0);
+
         uint256 randDna = _generateRandomDna(_name);
         _createZombie(_name, randDna);
     }

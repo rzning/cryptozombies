@@ -75,7 +75,7 @@ module.exports = {
   // 编译器选项
   compilers: {
     solc: {
-      // version: "0.5.1",    // 从 solc-bin 中获取准确版本 (default: truffle's version)
+      version: '0.8.5' // 从 solc-bin 中获取准确版本 (default: truffle's version)
       // docker: true,        // 使用你通过 docker 本地安装的 "0.5.1" (default: false)
       // settings: {          // 关于优化和 evmVersion 的建议，请参考 Solidity 文档
       //  optimizer: {

@@ -2,10 +2,13 @@
 
 Learn Solidity @ <https://cryptozombies.io/>
 
+加密僵尸 CryptoZombies 学习记录。
+
 ## Timeline
 
 - 2021-05-25 - 使用 Truffle 初始化项目 : `npx truffle init`
-- 2021-05-30 - 创建 ZombieFactory 僵尸工厂智能合约。
+- 2021-05-30 - 完成第 1 课，创建 ZombieFactory 僵尸工厂智能合约。
+- 2021-06-20 - 完成第 2 课，创建 ZombieFeeding 僵尸猎食智能合约。
 
 ## Truffle
 
