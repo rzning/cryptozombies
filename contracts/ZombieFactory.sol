@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.5;
 
+// 3.2 引入 Ownable 权限控制合约
+import "@openzeppelin/contracts/access/Ownable.sol";
+
 /**
  * @title 僵尸工厂
  * @notice 创建工厂函数用来生成僵尸，并将它们放入区块链上的僵尸数据库中。
  */
-contract ZombieFactory {
+contract ZombieFactory is Ownable {
     // 1.13 事件
     /// @notice 事件是合约和区块链通信的一种机制。
     // 前端应用可以监听指定事件，并作出反应。
@@ -22,15 +25,23 @@ contract ZombieFactory {
     /// @dev 僵尸 DNA 位数模量
     uint256 dnaModulus = 10**dnaDigits;
 
+    // 3.5 时间处理
+    /// @dev 添加一个“冷却周期”的设定，让僵尸两次攻击或捕食之间必须等待 1 天时间。
+    uint256 cooldownTime = 1 days;
+
     // 1.5 定义结构体
     /// @notice 字符串 string 类型用于保存任意长度的 UTF-8 编码数据。
-
     /// @dev 定义僵尸结构体
     struct Zombie {
         // 僵尸名字
         string name;
         // 僵尸基因
         uint256 dna;
+        // 3.4 Gas ：同类型数据放在一起，减少 Gas 消耗
+        // 僵尸等级
+        uint32 level;
+        // 猎食冷却时间
+        uint32 readyTime;
     }
 
     // 1.6 数组
@@ -71,8 +82,9 @@ contract ZombieFactory {
      */
     function _createZombie(string memory _name, uint256 _dna) internal {
         // 1.8 使用结构体和数组
+        // 3.5 添加 level 和 readyTime 字段
         /// @dev 创建一个 Zombie 僵尸实例，并加入 zombies 数组中
-        zombies.push(Zombie(_name, _dna));
+        zombies.push(Zombie(_name, _dna, 1, uint32(block.timestamp + cooldownTime)));
 
         /// @dev 取新增僵尸在数组中的索引作为 ID 标识。
         uint256 id = zombies.length - 1;

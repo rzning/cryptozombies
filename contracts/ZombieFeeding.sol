@@ -13,9 +13,25 @@ import "./KittyInterface.sol";
 contract ZombieFeeding is ZombieFactory {
     // 2.11 使用接口
     /// @dev CryptoKitties 合约的地址
-    address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+    // address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
     /// @dev 指向 CryptoKitties 合约
-    KittyInterface kittyContract = KittyInterface(ckAddress);
+    // KittyInterface kittyContract = KittyInterface(ckAddress);
+    // 3.1 将外部合约地址参数化
+    KittyInterface kittyContract;
+
+    /**
+     * @notice 设置 CryptoKitties 合约地址
+     * @dev 3.3 添加 onlyOwner 修饰符，使其只有所有者才能调用
+     */
+    function setKittyContractAddress(address _address) external onlyOwner {
+        kittyContract = KittyInterface(_address);
+    }
+
+    constructor() {
+        // 初始化 CryptoKitties 合约地址
+        address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+        kittyContract = KittyInterface(ckAddress);
+    }
 
     // 2.7 Storage 和 Memory
     /// @notice 在 Solidity 中，变量存储在两个地方： storage 和 memory
